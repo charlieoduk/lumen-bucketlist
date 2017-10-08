@@ -20,7 +20,7 @@ class AuthController extends Controller
         $this->jwt = $jwt;
     }
 
-    public function loginPost(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request, [
             'email'    => 'required|email|max:255',

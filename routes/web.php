@@ -18,7 +18,7 @@ $router->get('/', function () use ($router) {
 // User routes //
 
 $router->group(['prefix'=> 'api/v1'], function ($router){
-    $router->post('/auth/login', 'AuthController@loginPost');
+    $router->post('/auth/login', 'AuthController@login');
     $router->get('/users/', 'UserController@index');
     $router->post('/users/', 'UserController@store');
     $router->get('/users/{user_id}', 'UserController@show');
@@ -39,10 +39,10 @@ $router->group(['prefix'=>'api/v1','middleware'=>'auth'], function ($router) {
 
 // Item routes //
 
-$router->group(['prefix'=>'api/v1'], function ($router) {
-    $router->get('/bucketlists/{bucketlist_id/items', 'ItemController@index');
-    $router->post('/bucketlists/{bucketlist_id/items', 'ItemController@store');
-    $router->get('/bucketlists/{bucketlist_id/items/{items_id}', 'ItemController@store');
-    $router->put('/bucketlists/{bucketlist_id/items/{items_id}', 'ItemController@store');
-    $router->delete('/bucketlists/{bucketlist_id/items/{items_id}', 'ItemController@store');
+$router->group(['prefix'=>'api/v1', 'middleware'=>'auth'], function ($router) {
+    $router->get('/bucketlists/{bucketlist_id}/items', 'ItemController@index');
+    $router->post('/bucketlists/{bucketlist_id}/items', 'ItemController@store');
+    $router->get('/bucketlists/{bucketlist_id}/items/{item_id}', 'ItemController@show');
+    $router->put('/bucketlists/{bucketlist_id}/items/{item_id}', 'ItemController@update');
+    $router->delete('/bucketlists/{bucketlist_id}/items/{items_id}', 'ItemController@delete');
 });

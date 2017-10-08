@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     protected $table = 'items';
-    protected $fillable = ['item_name','bucketlist_id','user_id','done'];
+    protected $fillable = ['name','bucketlist_id','user_id','done'];
     protected $hidden = ['created_at', 'updated_at'];
 
     /**
