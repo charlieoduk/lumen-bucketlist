@@ -1,0 +1,28 @@
+machine:
+  php:
+    version: 7.0.7
+  environment:
+    APP_ENV: testing
+    POSTGRES_USER: ubuntu
+    POSTGRES_HOST: "127.0.0.1"
+    POSTGRES_DB: bucketlist-test
+    CIRCLE_PROJECT_USERNAME: charlieoduk
+    CIRCLE_PROJECT_REPONAME: lumen-bucketlist
+    IMG_TAG: $(echo $CIRCLE_SHA1 | cut -c -7)
+  services:
+    - redis
+
+general:
+  artifacts:
+    - "reports"
+
+dependencies:
+  override:
+    - curl -sS https://getcomposer.org/installer | php --filename=composer
+    - composer install --prefer-dist --no-interaction
+
+test:
+  override:
+    - vendor/bin/phpunit
+  post:
+    # - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN vendor/bin/test-reporter
