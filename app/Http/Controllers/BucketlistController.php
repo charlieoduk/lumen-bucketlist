@@ -46,14 +46,11 @@ class BucketlistController extends Controller
 
         $user_id = $this->userID($request);
 
-        $bucketlists = Bucketlist::where('user_id',$user_id)->get()->toArray();
+        $bucketlist = Bucketlist::where([
+            'user_id' => $user_id,
+            'id' => $bucketlist_id
+            ])->get();
 
-        foreach ($bucketlists as $bucketlist) {
-           if($bucketlist['id'] == $bucketlist_id) {
-               return $bucketlist;
-           }
-        }
-
-        return $this->success($bucketlist1, 200);
+        return $this->success($bucketlist, 200);
     }
 }
