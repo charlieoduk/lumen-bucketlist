@@ -55,7 +55,7 @@ class ItemController extends Controller
             'user_id'=> $user_id,
             'bucketlist_id' => $bucketlist_id
             ]
-        )->get()->toArray();
+        )->paginate(10)->toArray();
 
         if (empty($items)) {
             return $this->error('No items found in this bucketlist', 404);

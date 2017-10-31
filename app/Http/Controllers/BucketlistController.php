@@ -50,7 +50,7 @@ class BucketlistController extends Controller
          
          $user_id = $this->userID($request);
 
-         $bucketlists = Bucketlist::where('user_id', $user_id)->get();
+         $bucketlists = Bucketlist::where('user_id', $user_id)->paginate(10);
 
          return $this->success($bucketlists, 200);
 
@@ -103,9 +103,15 @@ class BucketlistController extends Controller
             'user_id' => $user_id,
             'id' => $bucketlist_id
             ]
-        )->get();
-
-        return $this->success($bucketlist, 200);
+        )->get()->toArray();
+        if (empty($bucketlist)) {
+            return $this->error(
+                "Bucketlist with id {$bucketlist_id} does not exist or does not belong to you", 
+                404
+            );
+        } else {
+            return $this->success($bucketlist, 200);
+        }
     }
 
      /**
