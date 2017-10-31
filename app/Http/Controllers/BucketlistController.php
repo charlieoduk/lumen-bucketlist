@@ -107,4 +107,62 @@ class BucketlistController extends Controller
 
         return $this->success($bucketlist, 200);
     }
+
+     /**
+      * PUT, update a specific bucketlist
+      *
+      * @param Request|object $request       - request payload
+      * @param Number         $bucketlist_id - id of the bucketlist
+      *
+      * @return json JSON object containing a success or error message
+      */
+    public function update(Request $request, $bucketlist_id)
+    {
+        $user_id = $this->userId($request);
+
+        $bucketlist = Bucketlist::where(
+            [
+            'user_id'=> $user_id,
+            'id' => $bucketlist_id
+            ]
+        )->first();
+
+        if (empty($bucketlist)) {
+            return $this->error(
+                "Bucketlist with id {$bucketlist_id} does not exist or does not belong to you", 
+                404
+            );
+        } else {
+            $bucketlist->name = $request->get('name');
+            $bucketlist->save();
+            return $this->success('You have successfully updated the bucketlist', 200);
+        }
+    }
+
+    /**
+     * DELETE, delete a bucketlist
+     *
+     * @param Request|object $request       - request payload
+     * @param Number         $bucketlist_id - id of the bucketlist
+     *
+     * @return json JSON object containing a success or error message
+     */
+    public function destroy(Request $request, $bucketlist_id)
+    {
+        $user_id = $this->userId($request);
+
+        $bucketlist = Bucketlist::where(
+            [
+            'user_id'=> $user_id,
+            'id' => $bucketlist_id,
+            ]
+        )->first();
+
+        if (empty($bucketlist)) {
+            return $this->error("Bucketlist with id {$bucketlist_id} could not be found", 404);
+        } else {
+            $bucketlist->delete();
+            return $this->success("Bucketlist successfully deleted!", 200);
+        }
+    }
 }
