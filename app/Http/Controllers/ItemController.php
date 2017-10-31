@@ -82,7 +82,7 @@ class ItemController extends Controller
             ]
         );
 
-        $item = Item::create(
+        Item::create(
             [
             
             'name' => $request->get('name'),

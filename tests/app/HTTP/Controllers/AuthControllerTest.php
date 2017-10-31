@@ -3,12 +3,16 @@
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
+/**
+ * Class AuthTest
+ *
+ * @category Tests
+ * @package  Tests\App\HTTP\Controllers
+ */
 class AuthTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
+     /**
+     * Test successful authentication
      */
     public function testAuthenticationSuccess()
     {
@@ -17,17 +21,20 @@ class AuthTest extends TestCase
         $response->assertResponseStatus(200);
     }
     
+    /**
+     * Test generation of tokens on successful login
+     */
     public function testTokenGeneratedOnAuthenticationSuccess()
     {
-        $response = $this->post('api/v1/auth/login', [
-            'email'=>'oduk@andela.com', 'password'=>'password'
-            ]
-        );
-
-        $this->seeJsonStructure([
-            'token'
-        ]);
+        $this->secondSuccessfulLoginDetails();
+        $this->assertResponseStatus(200);
+        $response = json_decode($this->response->getContent());
+        $this->assertObjectHasAttribute('token', $response);
     }
+
+    /**
+     * Test authentication fails when credentials are incorrect
+     */
     public function testAuthenticationFailsWithWrongCredentials()
     {
         $response = $this->post('api/v1/auth/login', [
