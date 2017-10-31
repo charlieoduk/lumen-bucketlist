@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Bucketlist;
+use App\Models\Item;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+          $this->call('UserTableSeeder');
+          factory(Bucketlist::class, 50)->create();
+          factory(Item::class, 20)->create();
     }
 }
